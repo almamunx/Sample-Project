@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SampleProject_CodeFirst.Models;
 
 namespace SampleProject_CodeFirst
 {
@@ -23,6 +25,10 @@ namespace SampleProject_CodeFirst
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //// for MySQL
+            services.AddCors();
+            services.AddDbContext<SampleDBContext>(options => options.UseMySql(Configuration.GetConnectionString("SampleDB")));
+
             services.AddControllersWithViews();
         }
 
@@ -50,7 +56,7 @@ namespace SampleProject_CodeFirst
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Sample}/{action=Index}/{id?}");
             });
         }
     }
